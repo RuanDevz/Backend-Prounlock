@@ -3,18 +3,13 @@ const db = require('./models');
 const cors = require('cors');
 const { Pool } = require('pg');
 require('dotenv').config();
-//redeploy
 const app = express();
 
-const productsRouter = require('./routes/products');
-const categoriesRouter = require('./routes/categories');
 const userRouter = require('./routes/user');
 
 app.use(express.json());
 app.use(cors());
 
-app.use('/products', productsRouter);
-app.use('/categories', categoriesRouter);
 app.use('/auth', userRouter);
 
 db.sequelize.authenticate()
