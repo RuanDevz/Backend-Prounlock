@@ -33,19 +33,22 @@ router.post('/register', async (req,res) =>{
     res.status(201).json(createnewuser)
 })
 
-router.post('/login', async (req,res) =>{
-    const {email, password} = req.body
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
 
-    const user = await User.findOne({where: {email}})
+    // Busca o usuário pelo e-mail
+    const user = await User.findOne({ where: { email } });
 
     if (!user || !bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({ error: "Credenciais incorretas!" });
     }
 
-    const accesstoken = sign({email: user.email, id: user.id}, process.env.TOKEN_VERIFY_ACCESS)
+    // Gera o token de acesso
+    const accesstoken = sign({ email: user.email, id: user.id }, process.env.TOKEN_VERIFY_ACCESS);
 
-    res.json({token: accesstoken})
-})
+    // Retorna o token e o nome do usuário
+    res.json({ token: accesstoken, name: user.name });
+});
 router.get('/dashboard', Authmiddleware, async (req, res) => {
     const userId = req.user.id;
 
