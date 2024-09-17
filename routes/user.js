@@ -13,6 +13,25 @@ router.get('/', async (req,res) =>{
     const getallusers = await User.findAll()
     res.status(200).json(getallusers)
 })
+
+router.get('/is-vip/:email', async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuário não encontrado!' });
+        }
+
+        res.status(200).json({ isVip: user.isVip });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao verificar status VIP' });
+    }
+});
+
+
 router.post('/register', async (req,res) =>{
     const {password,email, ...users} = req.body
 
