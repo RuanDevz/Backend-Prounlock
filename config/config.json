@@ -14,10 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "",
-    "password": "",
-    "database": "",
-    "host": "",
-    "dialect": ""
+    "username": "postgres.kzwtvfoxznmesiklzaku",
+    "password": "Ruan1120#@#@",
+    "database": "postgres",
+    "host": "aws-0-sa-east-1.pooler.supabase.com",
+    "port": 6543,
+    "dialect": "postgres"
   }
 }
