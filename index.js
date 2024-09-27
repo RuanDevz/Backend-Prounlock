@@ -6,10 +6,12 @@ require('dotenv').config();
 const app = express();
 
 const userRouter = require('./routes/user');
+const linkRouter = require('./routes/link')
 
 app.use(express.json());
 app.use(cors());
 app.use('/auth', userRouter);
+app.use('/freecontent', linkRouter)
 
 db.sequelize.authenticate()
   .then(() => {
