@@ -7,11 +7,13 @@ const app = express();
 
 const userRouter = require('./routes/user');
 const linkRouter = require('./routes/link')
+const payRouter = require('./routes/payment')
 
 app.use(express.json());
 app.use(cors());
 app.use('/auth', userRouter);
 app.use('/freecontent', linkRouter)
+app.use('/pay',payRouter)
 
 db.sequelize.authenticate()
   .then(() => {
