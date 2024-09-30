@@ -1,19 +1,27 @@
 const express = require('express');
-const db = require('./models'); 
 const cors = require('cors');
-const { Pool } = require('pg');
+const db = require('./models');
 require('dotenv').config();
+
 const app = express();
 
 const userRouter = require('./routes/user');
-const linkRouter = require('./routes/link')
-const payRouter = require('./routes/payment')
+const linkRouter = require('./routes/link');
+const payRouter = require('./routes/payment');
+const VipRouter = require('./routes/Vip');
+const Forgotpass = require('./routes/forgotpassword')
+const ResetPasswordRouter = require('./routes/resetpassword')
 
 app.use(express.json());
 app.use(cors());
+
 app.use('/auth', userRouter);
-app.use('/freecontent', linkRouter)
-app.use('/pay',payRouter)
+app.use('/freecontent', linkRouter);
+app.use('/vipcontent', VipRouter);
+app.use('/pay', payRouter); 
+app.use('/forgot-password', Forgotpass)
+app.use('/reset-password', ResetPasswordRouter)
+
 
 db.sequelize.authenticate()
   .then(() => {

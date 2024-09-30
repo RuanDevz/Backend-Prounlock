@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Link } = require('../models'); // Certifique-se de que o caminho está correto
+const { Link } = require('../models'); 
 
-// Criar um novo link
 router.post('/', async (req, res) => {
     const { name, link, author } = req.body;
     try {
@@ -14,7 +13,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Obter todos os links
 router.get('/', async (req, res) => {
     try {
         const links = await Link.findAll();
@@ -25,7 +23,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Obter um link específico pelo ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -40,7 +37,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Atualizar um link pelo ID
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { name, link, author } = req.body;
@@ -57,7 +53,6 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Deletar um link pelo ID
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     try {
