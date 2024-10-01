@@ -1,57 +1,83 @@
 const express = require('express');
 const router = express.Router();
-const { VIPContent, User } = require('../models'); 
-const jwt = require('jsonwebtoken');
+const { Vip } = require('../models'); // Ajuste o caminho conforme necessário
 
-const verifyVIP = async (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Token não fornecido' });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    const user = await User.findOne({ where: { id: decoded.id } });
-
-    if (!user) {
-      return res.status(401).json({ message: 'Usuário não encontrado' });
+// Create (POST) - Adicionar um novo conteúdo VIP
+router.post('/', async (req, res) => {
+    try {
+        const { name, link, author } = req.body;
+        const newVip = await Vip.create({
+            name,
+            link,
+            author,
+        });
+        res.status(201).json(newVip);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao criar o conteúdo VIP' });
     }
-
-    if (!user.isVip) {
-      return res.status(403).json({ message: 'Acesso permitido apenas para usuários VIP' });
-    }
-
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Token inválido', error });
-  }
-};
-
-router.get('/', async (req, res) => {
-  try {
-    const vipContent = await VIPContent.findAll(); 
-    res.json(vipContent); 
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar conteúdo VIP', error });
-  }
 });
 
-router.post('/', verifyVIP, async (req, res) => {
-  const { name, link, author } = req.body;
+// Read (GET) - Listar todos os conteúdos VIP
+router.get('/', async (req, res) => {
+    try {
+        const vips = await Vip.findAll();
+        res.status(200).json(vips);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar os conteúdos VIP' + error });
+    }
+});
 
-  try {
-    const newContent = await VIPContent.create({
-      name,
-      link,
-      author,
-    });
+// Read (GET) - Buscar um conteúdo VIP por ID
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const vip = await Vip.findByPk(id);
+        if (!vip) {
+            return res.status(404).json({ error: 'Conteúdo VIP não encontrado' });
+        }
+        res.status(200).json(vip);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar o conteúdo VIP' });
+    }
+});
 
-    res.status(201).json(newContent);
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao criar conteúdo VIP', error });
-  }
+// Update (PUT) - Atualizar um conteúdo VIP
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, link, author } = req.body;
+
+        const vipToUpdate = await Vip.findByPk(id);
+        if (!vipToUpdate) {
+            return res.status(404).json({ error: 'Conteúdo VIP não encontrado' });
+        }
+
+        vipToUpdate.name = name;
+        vipToUpdate.link = link;
+        vipToUpdate.author = author;
+        await vipToUpdate.save();
+
+        res.status(200).json(vipToUpdate);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao atualizar o conteúdo VIP' });
+    }
+});
+
+// Delete (DELETE) - Deletar um conteúdo VIP
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const vipToDelete = await Vip.findByPk(id);
+        if (!vipToDelete) {
+            return res.status(404).json({ error: 'Conteúdo VIP não encontrado' });
+        }
+
+        await vipToDelete.destroy();
+        res.status(200).json({ message: 'Conteúdo VIP deletado com sucesso' });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao deletar o conteúdo VIP' });
+    }
 });
 
 module.exports = router;

@@ -4,7 +4,6 @@ const crypto = require("crypto");
 const { User } = require("../models");
 const router = express.Router();
 
-// Configurando o transporte de email
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -23,7 +22,7 @@ router.post("/", async (req, res) => {
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const resetTokenExpiration = Date.now() + 3600000; // 1 hora
+    const resetTokenExpiration = Date.now() + 3600000; 
 
     user.resetPasswordToken = token;
     user.resetPasswordExpires = resetTokenExpiration;

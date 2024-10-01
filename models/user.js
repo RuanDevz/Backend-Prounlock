@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true, // Adicionei a restrição de unicidade para o email
+            unique: true, 
         },
         password: {
             type: DataTypes.STRING,
@@ -18,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false,
             allowNull: false
         },
-        resetPasswordToken: { // Adicionando a coluna para o token de redefinição
+        resetPasswordToken: { 
             type: DataTypes.STRING,
             allowNull: true,
         },
-        resetPasswordExpires: { // Adicionando a coluna para a expiração do token
+        resetPasswordExpires: { 
             type: DataTypes.DATE,
             allowNull: true,
         }

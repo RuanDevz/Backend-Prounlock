@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Link = sequelize.define('Link', {
+    const Vip = sequelize.define('Vip', {
         name: {
             type: DataTypes.STRING,
             allowNull: false, 
@@ -11,8 +11,13 @@ module.exports = (sequelize, DataTypes) => {
         author: {
             type: DataTypes.STRING,
             allowNull: false, 
+        },
+        postDate: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW, 
         }
-    }, {});
+    });
 
-    return Link;
+    return Vip;
 };

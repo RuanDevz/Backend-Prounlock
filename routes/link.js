@@ -23,6 +23,27 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Nova rota para buscar links por mês e ano
+router.get('/filter/:year/:month', async (req, res) => {
+    const { year, month } = req.params;
+    try {
+        const links = await Link.findAll({
+            where: {
+                createdAt: {
+                    [Op.and]: [
+                        Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('createdAt')), year),
+                        Sequelize.where(Sequelize.fn('MONTH', Sequelize.col('createdAt')), month)
+                    ]
+                }
+            }
+        });
+        res.status(200).json(links);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar os links' });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
