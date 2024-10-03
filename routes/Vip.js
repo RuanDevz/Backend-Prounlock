@@ -17,7 +17,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Read (GET) - Listar todos os conteúdos VIP
 router.get('/', async (req, res) => {
     try {
         const vips = await Vip.findAll();

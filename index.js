@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 
 const userRouter = require('./routes/user');
-const linkRouter = require('./routes/link');
+const linkRouter = require('./routes/Free');
 const payRouter = require('./routes/payment');
 const VipRouter = require('./routes/Vip');
 const Forgotpass = require('./routes/forgotpassword')
