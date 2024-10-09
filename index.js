@@ -23,6 +23,7 @@ app.use('/forgot-password', Forgotpass)
 app.use('/reset-password', ResetPasswordRouter)
 
 
+
 db.sequelize.authenticate()
   .then(() => {
     console.log('Conexão com o banco de dados estabelecida com sucesso.');
