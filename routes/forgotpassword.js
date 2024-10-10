@@ -28,7 +28,7 @@ router.post("/", async (req, res) => {
     user.resetPasswordExpires = resetTokenExpiration;
     await user.save();
 
-    const resetLink = `http://localhost:5173/#/reset-password?token=${token}`;
+    const resetLink = `${process.env.FRONTEND_URL}/#/reset-password?token=${token}`;
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
