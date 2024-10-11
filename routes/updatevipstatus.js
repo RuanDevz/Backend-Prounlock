@@ -1,10 +1,9 @@
 const express = require('express');
-const { User } = require('../models'); // Supondo que você tenha um modelo User definido
+const { User } = require('../models')
 const router = express.Router();
 
-// Rota para atualizar o status VIP do usuário
 router.post('/', async (req, res) => {
-  const { email } = req.body; // O e-mail do usuário vem do corpo da requisição
+  const { email } = req.body; 
 
   if (!email) {
     return res.status(400).json({ error: 'Email is required' });

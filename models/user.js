@@ -16,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         isVip: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-            allowNull: false
+            allowNull: false,
         },
-        isAdmin:{
+        isAdmin: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-            allowNull: false
+            allowNull: false,
         },
         resetPasswordToken: { 
             type: DataTypes.STRING,
@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         resetPasswordExpires: { 
             type: DataTypes.DATE,
             allowNull: true,
+        },
+        vipExpirationDate: { // Campo para armazenar a data de expiração do VIP
+            type: DataTypes.DATE,
+            allowNull: true, // Permite que o campo seja nulo inicialmente
         }
     }, {});
 

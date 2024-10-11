@@ -12,7 +12,7 @@ app.use(cors());
 
 // Importação dos roteadores
 const userRouter = require('./routes/user');
-const linkRouter = require('./routes/Free');
+const FreeRouter = require('./routes/Free');
 const payRouter = require('./routes/payment');
 const VipRouter = require('./routes/Vip');
 const Forgotpass = require('./routes/forgotpassword');
@@ -21,7 +21,7 @@ const UpdateVipStatus = require('./routes/updatevipstatus')
 
 // Definição das rotas
 app.use('/auth', userRouter);
-app.use('/freecontent', linkRouter);
+app.use('/freecontent', FreeRouter);
 app.use('/vipcontent', VipRouter);
 app.use('/pay', payRouter);
 app.use('/forgot-password', Forgotpass);
@@ -39,7 +39,7 @@ pool.connect((err, client, done) => {
     return;
   }
   console.log('Conexão bem-sucedida ao banco de dados');
-  done(); // Libera o cliente
+  done();
 });
 
 // Autentica com o Sequelize e inicia o servidor
