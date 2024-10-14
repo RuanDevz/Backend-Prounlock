@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./models'); // Importa os modelos Sequelize
+const db = require('./models');
 require('dotenv').config();
-const { Pool } = require('pg'); // Importa o Pool do pg
+const { Pool } = require('pg');
 
 const app = express();
 
