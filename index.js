@@ -27,20 +27,19 @@ app.use('/pay', payRouter);
 app.use('/forgot-password', Forgotpass);
 app.use('/reset-password', ResetPasswordRouter);
 app.use('/update-vip-status', UpdateVipStatus);
-
 // Configuração do banco de dados
-//const pool = new Pool({
-  //connectionString: process.env.POSTGRES_URL,
-//});
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+});
 
-//pool.connect((err, client, done) => {
-  //if (err) {
-    //console.error('Erro ao conectar ao banco de dados:', err);
-    //return;
-  //}
-  //console.log('Conexão bem-sucedida ao banco de dados');
-  //done();
-//});
+pool.connect((err, client, done) => {
+  if (err) {
+    console.error('Erro ao conectar ao banco de dados:', err);
+    return;
+  }
+  console.log('Conexão bem-sucedida ao banco de dados');
+  done();
+});
 
 // Conexão com Sequelize
 db.sequelize.authenticate()
