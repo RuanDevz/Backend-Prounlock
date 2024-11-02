@@ -16,6 +16,8 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    //
+
     await User.update(
       { isVip: true },
       { where: { email } }
