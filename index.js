@@ -27,6 +27,7 @@ app.use('/pay', payRouter);
 app.use('/forgot-password', Forgotpass);
 app.use('/reset-password', ResetPasswordRouter);
 app.use('/update-vip-status', UpdateVipStatus);
+
 // Configuração do banco de dados
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL,
