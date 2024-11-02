@@ -28,7 +28,6 @@ app.use('/forgot-password', Forgotpass);
 app.use('/reset-password', ResetPasswordRouter);
 app.use('/update-vip-status', UpdateVipStatus);
 
-// Configuração do banco de dados
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL,
 });
@@ -42,7 +41,6 @@ pool.connect((err, client, done) => {
   done();
 });
 
-// Conexão com Sequelize
 db.sequelize.authenticate()
   .then(() => {
     console.log('Conexão com o banco de dados estabelecida com sucesso.');
