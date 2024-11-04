@@ -71,7 +71,7 @@ router.delete('/:id', async (req, res) => {
         if (!vipToDelete) {
             return res.status(404).json({ error: 'Conteúdo VIP não encontrado' });
         }
-
+//
         await vipToDelete.destroy();
         res.status(200).json({ message: 'Conteúdo VIP deletado com sucesso' });
     } catch (error) {
