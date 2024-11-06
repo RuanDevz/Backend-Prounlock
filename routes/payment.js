@@ -16,7 +16,7 @@ router.post('/vip-payment', async (req, res) => {
         monthly: 'price_1QHw3XCFG0rp6kkJKd7UyEZl',
         annual: 'price_1QHw41CFG0rp6kkJhrKHrQxk',
     };
-
+//
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
