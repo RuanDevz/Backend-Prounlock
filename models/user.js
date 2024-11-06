@@ -31,30 +31,31 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: true,
         },
-        vipExpirationDate: { // Campo para armazenar a data de expiração do VIP
+        vipExpirationDate: { 
             type: DataTypes.DATE,
-            allowNull: true, // Permite que o campo seja nulo inicialmente
+            allowNull: true, 
         },
-        lastLogin: { // Campo para armazenar a última vez que o usuário fez login
+        lastLogin: {
             type: DataTypes.DATE,
             allowNull: true,
         },
-        recentlyViewed: { // Lista de conteúdos visualizados recentemente
-            type: DataTypes.ARRAY(DataTypes.STRING), // Armazena um array de strings
+        recentlyViewed: { 
+            type: DataTypes.ARRAY(DataTypes.STRING), 
             allowNull: true,
-            defaultValue: [], // Inicializa com um array vazio
+            defaultValue: [], 
         },
-        transactions: { // Lista de transações feitas pelo usuário
-            type: DataTypes.JSONB, // Usando JSONB para armazenar um array de objetos de transações
+        transactions: { 
+            type: DataTypes.JSONB, 
             allowNull: true,
-            defaultValue: [], // Inicializa com um array vazio
+            defaultValue: [], 
         },
-        favorites: { // Lista de conteúdos favoritos do usuário
-            type: DataTypes.JSONB, // Usando JSONB para armazenar um array de objetos de favoritos
+        favorites: { 
+            type: DataTypes.JSONB, 
             allowNull: true,
-            defaultValue: [], // Inicializa com um array vazio
+            defaultValue: [], 
         },
     }, {});
 
     return User;
 };
+ 

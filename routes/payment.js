@@ -13,8 +13,8 @@ router.post('/vip-payment', async (req, res) => {
     }
 
     const prices = {
-        monthly: 'price_1Q3scFJycl4dGkMpsgd9qr2K',
-        annual: 'price_1Q4Xs0Jycl4dGkMp70Su1XTg',
+        monthly: 'price_1QHw3XCFG0rp6kkJKd7UyEZl',
+        annual: 'price_1QHw41CFG0rp6kkJhrKHrQxk',
     };
 
     try {
@@ -27,8 +27,8 @@ router.post('/vip-payment', async (req, res) => {
                 },
             ],
             mode: 'subscription',
-            success_url: `${process.env.FRONTEND_URL}/#/success?email=${encodeURIComponent(email)}&planType=${encodeURIComponent(planType)}`,
-            cancel_url: `${process.env.FRONTEND_URL}/#/cancel?email=${encodeURIComponent(email)}&planType=${encodeURIComponent(planType)}`,
+            success_url: `${process.env.FRONTEND_URL}/#/success`,
+            cancel_url: `${process.env.FRONTEND_URL}/#/cancel`
         });
 
         res.json({ url: session.url });
