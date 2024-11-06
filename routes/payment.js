@@ -13,8 +13,8 @@ router.post('/vip-payment', async (req, res) => {
     }
 
     const prices = {
-        monthly: 'price_1QHw3XCFG0rp6kkJKd7UyEZl',
-        annual: 'price_1QHw41CFG0rp6kkJhrKHrQxk',
+        monthly: `${process.env.STRIPE_PRICEID_MONTHLY}`,
+        annual: `${process.env.STRIPE_PRICEID_ANNUAL}`,
     };
 
     try {
