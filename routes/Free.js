@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const { Free } = require('../models');
 
+// Criar (POST) - Adicionar um novo conteúdo gratuito
 router.post('/', async (req, res) => {
     try {
-        const { name, link } = req.body;
+        const { name, link, createdAt } = req.body; // Incluindo 'createdAt' no corpo da requisição
         const newFreeContent = await Free.create({
             name,
             link,
+            createdAt: createdAt || new Date(), // Se a data não for passada, usamos a data atual
         });
         res.status(201).json(newFreeContent);
     } catch (error) {
@@ -15,7 +17,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-
+// Buscar todos os conteúdos gratuitos (GET)
 router.get('/', async (req, res) => {
     try {
         const freeContents = await Free.findAll();
@@ -25,6 +27,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Buscar um conteúdo gratuito por ID (GET)
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -38,10 +41,11 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Atualizar (PUT) - Atualizar conteúdo gratuito
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, link } = req.body; 
+        const { name, link, createdAt } = req.body; // Incluindo 'createdAt' no corpo da requisição
 
         const freeContentToUpdate = await Free.findByPk(id);
         if (!freeContentToUpdate) {
@@ -50,6 +54,8 @@ router.put('/:id', async (req, res) => {
 
         freeContentToUpdate.name = name;
         freeContentToUpdate.link = link;
+        freeContentToUpdate.createdAt = createdAt || freeContentToUpdate.createdAt; // Atualiza a data se passada, senão mantém a existente
+
         await freeContentToUpdate.save();
 
         res.status(200).json(freeContentToUpdate);
@@ -58,7 +64,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-
+// Deletar (DELETE) - Deletar conteúdo gratuito
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;

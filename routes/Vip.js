@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { Vip } = require('../models'); // Ajuste o caminho conforme necessário
+const { Vip } = require('../models');
 
-// Create (POST) - Adicionar um novo conteúdo VIP
+// Criar (POST) - Adicionar um novo conteúdo VIP
 router.post('/', async (req, res) => {
     try {
-        const { name, link } = req.body;
+        const { name, link, createdAt } = req.body; // Incluindo 'createdAt' no corpo da requisição
         const newVip = await Vip.create({
             name,
             link,
+            createdAt: createdAt || new Date(), // Se a data não for passada, usamos a data atual
         });
         res.status(201).json(newVip);
     } catch (error) {
@@ -16,8 +17,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// ...restante do código permanece o mesmo
-
+// Buscar todos os conteúdos VIP (GET)
 router.get('/', async (req, res) => {
     try {
         const vips = await Vip.findAll();
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Read (GET) - Buscar um conteúdo VIP por ID
+// Buscar um conteúdo VIP por ID (GET)
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -41,11 +41,11 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Update (PUT) - Atualizar um conteúdo VIP
+// Atualizar (PUT) - Atualizar conteúdo VIP
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, link } = req.body;
+        const { name, link, createdAt } = req.body; // Incluindo 'createdAt' no corpo da requisição
 
         const vipToUpdate = await Vip.findByPk(id);
         if (!vipToUpdate) {
@@ -54,6 +54,8 @@ router.put('/:id', async (req, res) => {
 
         vipToUpdate.name = name;
         vipToUpdate.link = link;
+        vipToUpdate.createdAt = createdAt || vipToUpdate.createdAt; // Atualiza a data se passada, senão mantém a existente
+
         await vipToUpdate.save();
 
         res.status(200).json(vipToUpdate);
@@ -62,7 +64,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Delete (DELETE) - Deletar um conteúdo VIP
+// Deletar (DELETE) - Deletar conteúdo VIP
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -71,7 +73,7 @@ router.delete('/:id', async (req, res) => {
         if (!vipToDelete) {
             return res.status(404).json({ error: 'Conteúdo VIP não encontrado' });
         }
-//
+
         await vipToDelete.destroy();
         res.status(200).json({ message: 'Conteúdo VIP deletado com sucesso' });
     } catch (error) {
