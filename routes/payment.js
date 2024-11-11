@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/vip-payment', async (req, res) => {
     const { email, planType } = req.body;
-
+//
     if (!email || !planType || !['monthly', 'annual'].includes(planType)) {
         return res.status(400).json({ error: 'Dados inválidos. Verifique o email e o tipo de plano.' });
     }
