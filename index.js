@@ -6,7 +6,6 @@ const { Pool } = require('pg');
 
 const app = express();
 
-// Middlewares
 app.use(express.json());
 app.use(cors());
 
@@ -17,9 +16,8 @@ const VipRouter = require('./routes/Vip');
 const Forgotpass = require('./routes/forgotpassword');
 const ResetPasswordRouter = require('./routes/resetpassword');
 const UpdateVipStatus = require('./routes/updatevipstatus');
-const StatsRouter = require('./routes/stats');  
-const RequestsRouter = require('./routes/requests');  
-const recommendationsRouter = require('./routes/recommendations');
+
+
 
 app.use('/auth', userRouter);
 app.use('/freecontent', FreeRouter);
@@ -28,9 +26,7 @@ app.use('/pay', payRouter);
 app.use('/forgot-password', Forgotpass);
 app.use('/reset-password', ResetPasswordRouter);
 app.use('/update-vip-status', UpdateVipStatus);
-app.use('/api/stats', StatsRouter);  
-app.use('/admin/requests', RequestsRouter)
-app.use('/recommendations', recommendationsRouter);
+
 
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL, 
@@ -51,7 +47,7 @@ db.sequelize.authenticate()
     return db.sequelize.sync();
   })
   .then(() => {
-    const PORT = process.env.PORT || 3001;
+    const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}...`);
     });

@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "Ruan1120#@",
-    "database": "Sevenxvip",
+    "database": "Prounlock",
     "host": "localhost",
     "dialect": "postgres"
   },
@@ -14,11 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "postgres.odmwehmozldkuxamoppf",
-    "password": "Proxxima2024!",
-    "database": "postgres",
-    "host": "aws-0-sa-east-1.pooler.supabase.com",
+    "username": "",
+    "password": "!",
+    "database": "",
+    "host": "",
     "port": 6543,
-    "dialect": "postgres"
+    "dialect": ""
   }
 }

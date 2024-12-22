@@ -4,11 +4,10 @@ const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const Authmiddleware = require('../Middleware/Auth');
-const isAdmin = require('../Middleware/isAdmin'); // Importando o middleware de admin
+const isAdmin = require('../Middleware/isAdmin');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Rota para buscar todos os usuários (apenas admins podem acessar)
 router.get('/', Authmiddleware, isAdmin, async (req, res) => {
     try {
         const getallusers = await User.findAll();
@@ -36,7 +35,6 @@ router.get('/is-admin/:email', async (req, res) => {
   });
   
 
-// Rota para verificar o status VIP de um usuário pelo email
 router.get('/is-vip/:email', async (req, res) => {
     const { email } = req.params;
 
@@ -54,28 +52,45 @@ router.get('/is-vip/:email', async (req, res) => {
     }
 });
 
-// Rota para registrar um novo usuário
 router.post('/register', async (req, res) => {
-    const { password, email, ...users } = req.body;
+    const { email, password, username } = req.body;
 
-    const hashpassword = await bcrypt.hash(password, 10);
-
-    const existingemail = await User.findOne({ where: { email } });
-
-    if (existingemail) {
-        return res.status(409).json({ error: 'Email já cadastrado!' });
+    if (!email || !password || !username) {
+        return res.status(400).json({ error: 'Email, senha e nome de usuário são obrigatórios!' });
     }
 
-    const createnewuser = await User.create({
-        ...users,
-        email,
-        password: hashpassword,
-    });
+    try {
+        const existingEmail = await User.findOne({ where: { email } });
 
-    res.status(201).json(createnewuser);
+        if (existingEmail) {
+            return res.status(409).json({ error: 'Email já cadastrado!' });
+        }
+
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await User.create({
+            username,
+            email,
+            password: hashPassword,
+        });
+
+        res.status(201).json({
+            message: 'Usuário criado com sucesso!',
+            user: {
+                id: newUser.id,
+                username: newUser.username,
+                email: newUser.email,
+                createdAt: newUser.createdAt,
+                updatedAt: newUser.updatedAt
+            }
+        });
+
+    } catch (error) {
+        console.error('Erro ao registrar usuário:', error);
+        res.status(500).json({ error: 'Erro ao criar usuário. Tente novamente mais tarde.' });
+    }
 });
 
-// Rota para login de usuário
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -87,52 +102,46 @@ router.post('/login', async (req, res) => {
 
     const accesstoken = sign({ email: user.email, id: user.id }, process.env.TOKEN_VERIFY_ACCESS);
 
-    res.json({ token: accesstoken, name: user.name });
+    res.json({
+        token: accesstoken,
+        user: {
+            username: user.username,  
+            email: user.email,         
+            isVip: user.isVip,         
+            isAdmin: user.isAdmin,     
+            name: user.name,          
+            createdAt: user.createdAt, 
+            updatedAt: user.updatedAt  
+        }
+    });
 });
 
-// Rota para o dashboard do usuário
+
 router.get('/dashboard', Authmiddleware, async (req, res) => {
     const userId = req.user.id;
 
     try {
         const user = await User.findByPk(userId);
-        res.json(user);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Erro interno do servidor" });
-    }
-});
 
-// Rota para pegar dados do usuário logado
-router.get('/user-data', Authmiddleware, async (req, res) => {
-    const userId = req.user.id;
-
-    try {
-        const user = await User.findByPk(userId);
-        
         if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado!' });
+            return res.status(404).json({ error: "Usuário não encontrado!" });
         }
 
-        const benefits = user.isVip ? [
-            "Access to 3 years of content with no ads.",
-            "Access to all content before it's posted for free users.",
-            "VIP badge on our Discord community.",
-            "Early access to exclusive content and special newsletters.",
-            "Priority support for viewing and accessing all content.",
-            "Exclusive Q&A sessions, webinars, and personalized content."
-        ] : [];
-
-        res.status(200).json({
-            name: user.name,
+        res.json({
+            username: user.username,
             email: user.email,
             isVip: user.isVip,
-            benefits: benefits,
+            isAdmin: user.isAdmin,
+            name: user.name,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
+
+
 
 module.exports = router;

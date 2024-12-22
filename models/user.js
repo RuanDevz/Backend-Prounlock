@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
-        name: {
+        username: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -34,25 +34,6 @@ module.exports = (sequelize, DataTypes) => {
         vipExpirationDate: { 
             type: DataTypes.DATE,
             allowNull: true, 
-        },
-        lastLogin: {
-            type: DataTypes.DATE,
-            allowNull: true,
-        },
-        recentlyViewed: { 
-            type: DataTypes.ARRAY(DataTypes.STRING), 
-            allowNull: true,
-            defaultValue: [], 
-        },
-        transactions: { 
-            type: DataTypes.JSONB, 
-            allowNull: true,
-            defaultValue: [], 
-        },
-        favorites: { 
-            type: DataTypes.JSONB, 
-            allowNull: true,
-            defaultValue: [], 
         },
     }, {});
 
