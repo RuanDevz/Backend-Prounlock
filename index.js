@@ -37,7 +37,7 @@ const pool = new Pool({
 
 pool.connect((err, client, done) => {
   if (err) {
-    console.error('Erro ao conectar ao banco de dados:', err);
+    console.error('Erro ao conectar ao banco de dado:', err);
     return;
   }
   console.log('Conexão bem-sucedida ao banco de dados');
