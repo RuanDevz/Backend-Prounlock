@@ -74,8 +74,12 @@ router.post('/register', async (req, res) => {
             password: hashPassword,
         });
 
+        // Gerar token JWT imediatamente após o registro
+        const accesstoken = sign({ email: newUser.email, id: newUser.id }, process.env.TOKEN_VERIFY_ACCESS);
+
         res.status(201).json({
             message: 'Usuário criado com sucesso!',
+            token: accesstoken, // Retornar o token no registro
             user: {
                 id: newUser.id,
                 username: newUser.username,

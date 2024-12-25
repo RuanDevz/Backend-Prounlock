@@ -9,23 +9,26 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Rotas de API
 const userRouter = require('./routes/user');
-const FreeRouter = require('./routes/Free');
 const payRouter = require('./routes/payment');
 const VipRouter = require('./routes/Vip');
 const Forgotpass = require('./routes/forgotpassword');
 const ResetPasswordRouter = require('./routes/resetpassword');
 const UpdateVipStatus = require('./routes/updatevipstatus');
+const streamingRouter = require('./routes/streaming');
 
+const SendEmailRouter = require('./routes/sendEmail');
 
-
+app.use('/api/streaming', streamingRouter);  
 app.use('/auth', userRouter);
-app.use('/freecontent', FreeRouter);
 app.use('/vipcontent', VipRouter);
 app.use('/pay', payRouter);
 app.use('/forgot-password', Forgotpass);
 app.use('/reset-password', ResetPasswordRouter);
 app.use('/update-vip-status', UpdateVipStatus);
+app.use('/api', SendEmailRouter);
+
 
 
 const pool = new Pool({

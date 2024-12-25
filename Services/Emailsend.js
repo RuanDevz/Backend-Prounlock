@@ -1,30 +1,28 @@
 const nodemailer = require('nodemailer');
 
-const sendConfirmationEmail = async (email) => {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
+const sendEmail = async (formData) => {
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail', // ou outro serviço, como Outlook, Yahoo
     auth: {
-      user: process.env.EMAIL_USER, 
-      pass: process.env.EMAIL_PASS, 
+      user: 'prounlocksuporte@gmail.com',
+      pass: 'sua-senha-do-email', // Use variáveis de ambiente para maior segurança
     },
   });
 
-  // Email content
   const mailOptions = {
-    from: '"VIP Service" <your-email@example.com>',
-    to: email,
-    subject: 'VIP Membership Confirmation!',
-    text: 'Congratulations! You are now a VIP member.',
-    html: `
-      <h1>Welcome to VIP Access</h1>
-      <p>Hello,</p>
-      <p>We are excited to inform you that your payment was successful and you are now a VIP member! Enjoy exclusive content, ad-free experiences, and much more.</p>
-      <p>Thank you for being a part of our community!</p>
-      <p>Best regards, <br/> Your Service Team</p>
-    `,
+    from: formData.email, // E-mail do remetente
+    to: 'prounlocksuporte@gmail.com', // Alterado para o e-mail de destino correto
+    subject: `Nova mensagem de ${formData.name}`,
+    text: `Você recebeu uma nova mensagem:\n\nNome: ${formData.name}\nEmail: ${formData.email}\n\nMensagem:\n${formData.message}`,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+    return 'Mensagem enviada com sucesso!';
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    throw new Error('Falha ao enviar email');
+  }
 };
 
-module.exports = sendConfirmationEmail;
+module.exports = sendEmail;

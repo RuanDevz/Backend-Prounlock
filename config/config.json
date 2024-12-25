@@ -14,11 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "",
-    "password": "!",
-    "database": "",
+    "username": "postgres",
+    "password": "Proxxima2024!",
+    "database": "postgres",
     "host": "",
     "port": 6543,
-    "dialect": ""
+    "dialect": "postgres"
   }
 }
