@@ -14,11 +14,11 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "postgres.odmwehmozldkuxamoppf",
+    "username": "postgres.zvduoxxvyvdjtrydnrvl",
     "password": "Proxxima2024!",
     "database": "postgres",
     "host": "aws-0-sa-east-1.pooler.supabase.com",
-    "port": 6543,
+    "port": 5432,
     "dialect": "postgres"
   }
 }
