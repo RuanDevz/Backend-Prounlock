@@ -24,10 +24,11 @@ app.use('/api/streaming', streamingRouter);
 app.use('/auth', userRouter);
 app.use('/vipcontent', VipRouter);
 app.use('/pay', payRouter);
-app.use('/forgot-password', Forgotpass);
-app.use('/reset-password', ResetPasswordRouter);
+app.use('/resetpassword', ResetPasswordRouter);
 app.use('/update-vip-status', UpdateVipStatus);
 app.use('/api', SendEmailRouter);
+app.use('/forgotpassword', Forgotpass);
+
 
 
 

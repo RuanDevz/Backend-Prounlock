@@ -1,0 +1,46 @@
+const express = require('express');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
+const sendEmail = require('../Services/Emailsend'); // Função de envio de e-mail
+const User = require('../models/User'); // Modelo do usuário (ajuste para sua estrutura)
+
+// Secret para o token de redefinição
+const RESET_PASSWORD_SECRET = 'seu-segredo-seguro-aqui'; // Substitua por uma variável de ambiente
+
+// Rota para enviar o e-mail de recuperação de senha
+router.post('/forgotpassword', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: 'O campo de e-mail é obrigatório.' });
+  }
+
+  try {
+    // Verifica se o usuário existe
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    // Gera um token de redefinição
+    const token = jwt.sign({ userId: user.id }, RESET_PASSWORD_SECRET, { expiresIn: '1h' });
+
+    // Monta o link de redefinição
+    const resetLink = `${process.env.FRONTEND_URL}/resetpassword?token=${token}`;
+
+    // Envia o e-mail
+    const emailData = {
+      name: user.name,
+      email: user.email,
+      message: `Clique no link abaixo para redefinir sua senha:\n\n${resetLink}\n\nEste link expira em 1 hora.`,
+    };
+    await sendEmail(emailData);
+
+    return res.status(200).json({ message: 'E-mail de recuperação enviado com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao processar a recuperação de senha:', error);
+    return res.status(500).json({ error: 'Erro ao enviar o e-mail de recuperação.' });
+  }
+});
+
+module.exports = router;

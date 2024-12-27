@@ -28,18 +28,18 @@ router.post("/", async (req, res) => {
     user.resetPasswordExpires = resetTokenExpiration;
     await user.save();
 
-    const resetLink = `${process.env.FRONTEND_URL}/#/reset-password?token=${token}`;
+    const resetLink = `${process.env.FRONTEND_URL}/#/resetpassword?token=${token}`;
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Password Reset Request",
-      html: `<p>You requested a password reset. Click the link below to reset your password:</p>
-             <a href="${resetLink}">Reset Password</a>`,
+      subject: "PROUNLOCK - RESETAR SENHA",
+      html: `<p>Você solicitou o reset da sua senha, basta clicar no link</p>
+             <a href="${resetLink}">Resetar senha</a>`,
     };
 
     await transporter.sendMail(mailOptions);
 
-    res.json({ message: "Password reset email sent." });
+    res.json({ message: "Solicitação de reset de senha foi enviado para o email" });
   } catch (error) {
     console.error("Error sending email:", error);
     res.status(500).json({ message: "Error sending password reset email." });
