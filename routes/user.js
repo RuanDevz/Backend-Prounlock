@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
+const { Op } = require('sequelize');
+
 const { sign } = require('jsonwebtoken');
 const Authmiddleware = require('../Middleware/Auth');
 const isAdmin = require('../Middleware/isAdmin');
@@ -16,6 +18,38 @@ router.get('/', Authmiddleware, isAdmin, async (req, res) => {
         res.status(500).json({ error: "Erro ao buscar usuários." });
     }
 });
+
+router.get('/public-dashboard/:email', async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const user = await User.findOne({ 
+            where: { 
+                email: { [Op.iLike]: email }
+            } 
+        });
+        console.log('Usuário retornado:', user);
+
+
+        if (!user) {
+            return res.status(404).json({ error: "Usuário não encontrado!" });
+        }
+
+        res.json({
+            username: user.username,
+            email: user.email,
+            isVip: user.isVip,
+            isAdmin: user.isAdmin,
+            name: user.name,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
 
 router.get('/is-admin/:email', async (req, res) => {
     const { email } = req.params;
