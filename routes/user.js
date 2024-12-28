@@ -19,17 +19,16 @@ router.get('/', Authmiddleware, isAdmin, async (req, res) => {
     }
 });
 
-router.get('/public-dashboard/:email', async (req, res) => {
-    const { email } = req.params;
+// Rota para buscar usuário pelo email
+router.get('/username/:username', async (req, res) => {
+    const { username } = req.params; // Pega o 'username' da rota dinâmica
 
     try {
         const user = await User.findOne({ 
             where: { 
-                email: { [Op.iLike]: email }
+                username: { [Op.iLike]: username } // Busca pelo username no banco de dados de forma case-insensitive
             } 
         });
-        console.log('Usuário retornado:', user);
-
 
         if (!user) {
             return res.status(404).json({ error: "Usuário não encontrado!" });
@@ -51,6 +50,38 @@ router.get('/public-dashboard/:email', async (req, res) => {
 });
 
 
+// Rota pública para o dashboard do usuário
+router.get('/public-dashboard/:email', async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const user = await User.findOne({ 
+            where: { 
+                email: { [Op.iLike]: email }
+            } 
+        });
+        console.log('Usuário retornado:', user);
+
+        if (!user) {
+            return res.status(404).json({ error: "Usuário não encontrado!" });
+        }
+
+        res.json({
+            username: user.username,
+            email: user.email,
+            isVip: user.isVip,
+            isAdmin: user.isAdmin,
+            name: user.name,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
+// Outras rotas
 router.get('/is-admin/:email', async (req, res) => {
     const { email } = req.params;
   
@@ -66,8 +97,7 @@ router.get('/is-admin/:email', async (req, res) => {
       console.error(error);
       res.status(500).json({ error: 'Erro ao verificar status de admin' });
     }
-  });
-  
+});
 
 router.get('/is-vip/:email', async (req, res) => {
     const { email } = req.params;
@@ -153,7 +183,6 @@ router.post('/login', async (req, res) => {
     });
 });
 
-
 router.get('/dashboard', Authmiddleware, async (req, res) => {
     const userId = req.user.id;
 
@@ -178,7 +207,5 @@ router.get('/dashboard', Authmiddleware, async (req, res) => {
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
-
-
 
 module.exports = router;
